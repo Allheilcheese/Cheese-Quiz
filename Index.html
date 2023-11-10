@@ -1,0 +1,254 @@
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Cheese Quiz</title>
+  <style>
+    body {
+      font-family: Times New Roman, Comic Sans MS;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    #quiz-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option {
+      padding: 10px;
+      background-color: #f2f2f2;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #submit {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cheese Quiz</h1>
+  <div id="quiz-container">
+    <h2 id="question"></h2>
+    <div id="options">
+      <button class="option" onclick="checkAnswer(this)"></button>
+      <button class="option" onclick="checkAnswer(this)"></button>
+      <button class="option" onclick="checkAnswer(this)"></button>
+      <button class="option" onclick="checkAnswer(this)"></button>
+    </div>
+    <button id="submit" onclick="showResult()">Submit</button>
+    <div id="result" style="display: none;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Which cheese is known for its blue veins?",
+        options: ["Roquefort", "Cheddar", "Brie", "Gouda"],   
+        answer: "Roquefort"
+      },
+             {
+        question: "Which cheese is known for its strong aroma and creamy texture?",
+        options: ["Cheddar", "Brie", "Swiss", "Gouda"],
+        answer: "Gouda"
+      },
+      {
+        question: "Which cheese is traditionally used in Italian dishes like lasagna and pizza?",
+        options: ["Mozzarella", "Blue cheese", "Feta", "Camembert"],
+        answer: "Mozzarella"
+      },
+      {
+        question: "Which cheese is made from sheep's milk and has a tangy flavor?",
+        options: ["Gruyere", "Roquefort", "Parmesan", "Pecorino"],
+        answer: "Pecorino"
+      },
+      {
+        question: "Which cheese is known for its blue veins and strong flavor?",
+        options: ["Gouda", "Gorgonzola", "Monterey Jack", "Provolone"],
+        answer: "Gorgonzola"
+      },
+      {
+        question: "Which cheese is commonly used in Mexican cuisine and has a crumbly texture?",
+        options: ["Cheddar", "Cotija", "Emmental", "Havarti"],
+        answer: "Cotija"
+      },
+      {
+        question: "Which cheese is known for its distinctive orange color?",
+        options: ["Colby", "Gouda", "Red Leicester", "Fontina"],
+        answer: "Red Leicester"
+      },
+      {
+        question: "Which cheese is often used as a topping for burgers and sandwiches?",
+        options: ["Swiss", "Provolone", "American", "Cheddar"],
+        answer: "Cheddar"
+      },
+      {
+        question: "Which cheese is made from goat's milk and has a creamy texture?",
+        options: ["Gruyere", "Camembert", "Goat cheese", "Gorgonzola"],
+        answer: "Goat cheese"
+      },
+      {
+        question: "Which cheese is known for its nutty flavor and hard texture?",
+        options: ["Gouda", "Parmesan", "Brie", "Blue cheese"],
+        answer: "Parmesan"
+      },
+      {
+        question: "Which cheese is commonly used in Greek salads and has a salty taste?",
+        options: ["Feta", "Mozzarella", "Gouda", "Swiss"],
+        answer: "Feta"
+      },
+      {
+        question: "Which cheese is often used in fondue and has a smooth, melty texture?",
+        options: ["Cheddar", "Gruyere", "Provolone", "Colby"],
+        answer: "Gruyere"
+      },
+      {
+        question: "Which cheese is known for its smoky flavor and yellow color?",
+        options: ["Gouda", "Smoked cheddar", "Blue cheese", "Gruyere"],
+        answer: "Smoked cheddar"
+      },
+      {
+        question: "Which cheese is commonly used in desserts like cheesecake?",
+        options: ["Ricotta", "Mascarpone", "Monterey Jack", "Brie"],
+        answer: "Mascarpone"
+      },
+      {
+        question: "Which cheese is known for its stringy texture when melted?",
+        options: ["Mozzarella", "Gouda", "Swiss", "Camembert"],
+        answer: "Mozzarella"
+      },
+      {
+        question: "Which cheese is often used in sandwiches and has a mild, creamy flavor?",
+        options: ["Cheddar", "Havarti", "Gorgonzola", "Parmesan"],
+        answer: "Havarti"
+      },
+      {
+        question: "Which cheese is known for its crumbly texture and sharp flavor?",
+        options: ["Feta", "Blue cheese", "Gouda", "Provolone"],
+        answer: "Blue cheese"
+      },
+      {
+        question: "Which cheese is commonly used in macaroni and cheese?",
+        options: ["Gruyere", "Colby", "Monterey Jack", "Cheddar"],
+        answer: "Cheddar"
+      },
+      {
+        question: "Which cheese is made from buffalo milk and has a rich, creamy taste?",
+        options: ["Brie", "Mozzarella", "Burrata", "Gouda"],
+        answer: "Burrata"
+      },
+      {
+        question: "Which cheese is often used in Mexican dishes like quesadillas and enchiladas?",
+        options: ["Cotija", "Queso fresco", "Emmental", "Havarti"],
+        answer: "Queso fresco"
+      },
+      {
+        question: "Which cheese is known for its sharp, tangy flavor and crumbly texture?",
+        options: ["Gouda", "Roquefort", "Parmesan", "Pecorino"],
+        answer: "Roquefort"
+      },
+      {
+        question: "Which cheese is commonly used in French onion soup and has a melted, gooey texture?",
+        options: ["Swiss", "Provolone", "Gruyere", "Cheddar"],
+        answer: "Gruyere"
+      },
+      {
+        question: "Which cheese is made from cow's milk and has a mild, creamy taste?",
+        options: ["Brie", "Blue cheese", "Feta", "Camembert"],
+        answer: "Brie"
+      },
+           {
+        question: "Which cheese is commonly used in Italian dishes like pasta and risotto?",
+        options: ["Mozzarella", "Parmesan", "Gorgonzola", "Monterey Jack"],
+        answer: "Parmesan"
+      },
+      {
+        question: "Which cheese is known for its creamy texture and earthy flavor?",
+        options: ["Gruyere", "Camembert", "Brie", "Gorgonzola"],
+        answer: "Brie"
+      },
+      {
+        question: "Which cheese is often used in Greek cuisine and has a tangy, salty taste?",
+        options: ["Feta", "Mozzarella", "Gouda", "Swiss"],
+        answer: "Feta"
+      },
+      {
+        question: "Which cheese is commonly used in Mexican dishes like nachos and tacos?",
+        options: ["Cheddar", "Queso blanco", "Monterey Jack", "Provolone"],
+        answer: "Monterey Jack"
+      },
+      {
+        question: "Which cheese is known for its creamy texture and mushroom-like flavor?",
+        options: ["Gouda", "Fontina", "Camembert", "Brie"],
+        answer: "Brie"
+      },
+      {
+        question: "Which cheese is often used in salads and has a crumbly texture?",
+        options: ["Feta", "Mozzarella", "Gouda", "Swiss"],
+        answer: "Feta"
+      }];
+    const questionElement = document.getElementById("question");
+    const optionsElements = document.getElementsByClassName("option");
+    const submitButton = document.getElementById("submit");
+    const resultElement = document.getElementById("result");
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    loadQuestion();
+
+    function loadQuestion() {
+      const currentQuizData = quizData[currentQuestion];
+      questionElement.innerText = currentQuizData.question;
+
+      for (let i = 0; i < optionsElements.length; i++) {
+        optionsElements[i].innerText = currentQuizData.options[i];
+      }
+    }
+
+    function checkAnswer(button) {
+      const selectedOption = button.innerText;
+      const currentQuizData = quizData[currentQuestion];
+
+      if (selectedOption === currentQuizData.answer) {
+        score++;
+      }
+
+      currentQuestion++;
+
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+  const result = "Your score: " + score + "/" + quizData.length;
+  resultElement.innerText = result;
+  resultElement.style.display = "block";
+  submitButton.disabled = true;
+
+  if (score === quizData.length) {
+    resultElement.innerText += "\nCongratulations! You Are a cheese enthusiast!";
+  } else {
+    resultElement.innerText += "\nRealy why are you even on Cheesepida. Wow just wow your the 1st person to do this idiot.";
+  }
+}
+
+  </script>
+</body>
+</html>
